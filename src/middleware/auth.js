@@ -15,13 +15,12 @@ export const isAuthenticated = async (req, res, next) => {
     token = req.cookies.hanko;
   }
   if (!token) {
-    // res.status = 401;
     res.status(401).send("Unauthorized");
     return;
   }
   await jose.jwtVerify(token, JWKS).catch((err) => {
-    res.status = 401;
-    res.send("Authentication Token not valid");
+    res.status(401).send("Authentication Token not valid");
+    return;
   });
   next();
 };

@@ -2,7 +2,6 @@ import { registerUser, checkEmailExists } from "../services/user.services.js";
 
 export const handleUserRegistration = async (req, res) => {
   const { name, email, avatar } = req.body;
-  console.log("here", email);
   const isEmailAlreadyRegistered = await checkEmailExists(email);
   if (isEmailAlreadyRegistered) {
     res.status(400).json({
@@ -22,8 +21,7 @@ export const handleUserRegistration = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.statusCode = 500;
-    res.json({
+    res.status(500).json({
       success: false,
       message: "Error in creating user",
     });
