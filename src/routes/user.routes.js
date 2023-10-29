@@ -3,6 +3,7 @@ import {
   handleGetUserFromHankoId,
   handleUserRegistration,
   handleUserUpdate,
+  handleHabitCompletion,
 } from "../controllers/user.controllers.js";
 
 const router = express.Router();
@@ -10,5 +11,6 @@ const router = express.Router();
 router.post("/", handleUserRegistration);
 router.get("/:hankoId", handleGetUserFromHankoId);
 router.put("/:hankoId", handleUserUpdate);
+router.put("/habit/:habitId", handleHabitCompletion);
 
 export default router;
