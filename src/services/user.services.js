@@ -12,7 +12,7 @@ export const registerUser = async (user) => {
 
 export const getUserFromHankoId = async (hankoId) => {
   try {
-    const user = await User.findOne({ hankoId: hankoId });
+    const user = await User.findOne({ hankoId: hankoId }).populate("habits");
     return user;
   } catch (err) {
     throw new Error("Error in finding user from Hanko ID");
@@ -22,7 +22,7 @@ export const getUserFromHankoId = async (hankoId) => {
 export const updateUserFromHankoId = async (hankoId, user) => {
   try {
     const updatedUser = await User.findOneAndUpdate({ hankoId }, user).populate(
-      "Habit"
+      "habits"
     );
     return updatedUser;
   } catch (err) {
