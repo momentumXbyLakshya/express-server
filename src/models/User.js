@@ -3,14 +3,15 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true },
+    name: String,
+    hankoId: String,
+    email: String,
     avatar: String,
-    health: Number,
-    points: Number,
-    level: Number,
+    health: { type: Number, default: 100 },
+    points: { type: Number, default: 0 },
+    level: { type: Number, default: 1 },
     habits: {
-      type: [Schema.Types.ObjectId],
+      type: [{ type: Schema.Types.ObjectId, ref: "Habit" }],
       default: [],
     },
     todos: {

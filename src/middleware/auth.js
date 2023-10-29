@@ -18,9 +18,14 @@ export const isAuthenticated = async (req, res, next) => {
     res.status(401).send("Unauthorized");
     return;
   }
+  let authError = false;
   await jose.jwtVerify(token, JWKS).catch((err) => {
+    authError = true;
+    console.log(err);
+  });
+  if (authError) {
     res.status(401).send("Authentication Token not valid");
     return;
-  });
+  }
   next();
 };
