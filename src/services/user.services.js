@@ -36,31 +36,37 @@ export const updateUserFromHankoId = async (hankoId, user) => {
 
 export const updateUserWithHabit = async (habitId) => {
   try {
-    let habit = await Habit.findById(habitId);
-    let user = await User.findById(habit.user).populate("habits");
+    const habit = await Habit.findById(habitId);
+    const user = await User.findById(habit.user).populate("habits");
+
     if (!habit || !user) {
-      throw new Error("User or Habit not found");
+      throw new Error("Habit or user not found");
     }
+
     if (habit.type === 1) {
       const prevCounter = habit.positiveCounter;
       habit.positiveCounter = prevCounter + 1;
       user.points += 5 * habit.difficulty;
+
       if (user.points >= 100) {
         user.level += 1;
-        user.points = user.points - 100;
+        user.points -= 100;
         user.health = 100;
       }
     } else {
       const prevCounter = habit.negativeCounter;
       habit.negativeCounter = prevCounter - 1;
+
       if (user.health >= 4) {
         user.health -= 4;
       }
     }
+
     await habit.save();
-    user = await User.findById(habit.user).populate("habits");
     await user.save();
-    return user;
+
+    const updatedUser = await User.findById(habit.user).populate("habits");
+    return updatedUser;
   } catch (err) {
     console.log(err);
     throw new Error("Error in updating user data with Habit");
