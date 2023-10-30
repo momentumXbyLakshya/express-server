@@ -22,10 +22,13 @@ export const getUserFromHankoId = async (hankoId) => {
 
 export const updateUserFromHankoId = async (hankoId, user) => {
   try {
-    const updatedUser = await User.findOneAndUpdate({ hankoId }, user).populate(
-      "habits"
-    );
-    return updatedUser;
+    const toUpdateUser = await User.findOne({ hankoId }).populate("habits");
+    toUpdateUser.name = user.name;
+    toUpdateUser.avatar = user.avatar;
+
+    await toUpdateUser.save();
+
+    return toUpdateUser;
   } catch (err) {
     throw new Error("Error in finding user from Hanko ID");
   }
@@ -33,13 +36,14 @@ export const updateUserFromHankoId = async (hankoId, user) => {
 
 export const updateUserWithHabit = async (habitId) => {
   try {
-    const habit = await Habit.findById(habitId);
-    const user = await User.findById(habit.user).populate("habits");
+    let habit = await Habit.findById(habitId);
+    let user = await User.findById(habit.user).populate("habits");
     if (!habit || !user) {
       throw new Error("User or Habit not found");
     }
     if (habit.type === 1) {
-      habit.positiveCounter += 1;
+      const prevCounter = habit.positiveCounter;
+      habit.positiveCounter = prevCounter + 1;
       user.points += 5 * habit.difficulty;
       if (user.points >= 100) {
         user.level += 1;
@@ -47,12 +51,14 @@ export const updateUserWithHabit = async (habitId) => {
         user.health = 100;
       }
     } else {
-      habit.negativeCounter -= 1;
+      const prevCounter = habit.negativeCounter;
+      habit.negativeCounter = prevCounter - 1;
       if (user.health >= 4) {
         user.health -= 4;
       }
     }
     await habit.save();
+    user = await User.findById(habit.user).populate("habits");
     await user.save();
     return user;
   } catch (err) {

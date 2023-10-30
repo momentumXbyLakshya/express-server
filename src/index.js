@@ -6,6 +6,7 @@ import router from "./routes/index.js";
 import { isAuthenticated } from "./middleware/auth.js";
 
 import "./db.setup.js";
+import "./cronjobs/habit.js";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
