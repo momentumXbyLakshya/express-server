@@ -16,7 +16,7 @@ export const isAuthenticated = async (req, res, next) => {
     token = req.cookies.hanko;
   }
   console.log("Token recieved", token);
-  if (!token) {
+  if (token === null || token.length === 0) {
     res.status(401).send("Unauthorized");
     return;
   }
