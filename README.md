@@ -20,8 +20,8 @@ This is the backend for MomentumX Web Application. It is built using Express.js 
    PORT=8080
    FRONTEND_URL=http://localhost:3000
    ```
-   a. You must create a MongoDB Cluster on <a href="https://www.mongodb.com/atlas/database">MongoDB Atlas</a> and configure it such that it allows localhost to connect. Replace the `_` in front of `MONGODB_URI` with your database's URI.
-   b. You must create a <a href="https://cloud.hanko.io/">Hanko Cloud Project</a>. Sign to this platform and create a project specifying the front end of the project as `http://localhost:3000`. Replace the `_` in front of `HANKO_API_URI` with your project's URL.
+   a. You must create a MongoDB Cluster on <a href="https://www.mongodb.com/atlas/database">MongoDB Atlas</a> and configure it such that it allows localhost to connect. Replace the `_` in front       of `MONGODB_URI` with your database's URI.
+   b. You must create a <a href="https://cloud.hanko.io/">Hanko Cloud Project</a>. Sign to this platform and create a project specifying the front end of the project as `http://localhost:3000`.       Replace the `_` in front of `HANKO_API_URI` with your project's URL.
    c. Replace the `_` in front of `JWT_SECRET` with any secret of your choice.
 
 6. Install the dependencies.
