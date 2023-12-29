@@ -5,7 +5,8 @@ import cors from "cors";
 import router from "./routes/index.js";
 import { isAuthenticated } from "./middleware/auth.js";
 
-import "./db.setup.js";
+import connectDB from "./db.setup.js";
+
 import "./cronjobs/habit.js";
 
 const app = express();
@@ -17,13 +18,22 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: false, limit: "16kb" }));
 app.use(cookieParser());
-app.use(express.json());
 
 app.use(isAuthenticated);
 
 app.use("/api", router);
 
-app.listen(PORT, (err) => {
-  console.log(`Server running on port ${PORT}`);
-});
+connectDB()
+  .then(() => {
+    app.listen(PORT, (err) => {
+      if (err) console.log("Error in starting the server");
+      console.log(`Server running on ${PORT}`);
+    });
+  })
+  .catch(() => {});
+
+export default app;

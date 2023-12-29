@@ -1,5 +1,6 @@
 import { User } from "../models/User.js";
 import { Habit } from "../models/Habit.js";
+import { ApiError } from "../utilities/ApiError.js";
 
 export const createHabit = async (habit) => {
   const newCreatedHabit = new Habit({
@@ -20,7 +21,7 @@ export const createHabit = async (habit) => {
     await userOfHabit.save();
     return newCreatedHabit;
   } catch (err) {
-    throw Error("Error in creating habit");
+    throw new ApiError(500, "Something went wrong while creating habit");
   }
 };
 
@@ -34,8 +35,7 @@ export const deleteHabit = async (habitId) => {
     await userOfHabit.save();
     return deletedHabit;
   } catch (err) {
-    console.log(err);
-    throw Error("Error in deleting habit");
+    throw new ApiError(500, "Someting went wrong in deleting Habit");
   }
 };
 
@@ -49,7 +49,6 @@ export const updateHabit = async (habitId, habit) => {
     await habitToUpdate.save();
     return habitToUpdate;
   } catch (err) {
-    console.log(err);
-    throw new Error("Error in updating Habit");
+    throw new ApiError(500, "Someting went wrong in updating Habit");
   }
 };

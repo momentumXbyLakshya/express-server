@@ -3,59 +3,41 @@ import {
   deleteHabit,
   updateHabit,
 } from "../services/habit.services.js";
+import { ApiResponse } from "../utilities/ApiResponse.js";
+import { asyncHandler } from "../utilities/asyncHandler.js";
 
-// TODO: Error testing on endpoints
-export const handleCreateHabit = async (req, res) => {
-  try {
-    const newHabit = await createHabit(req.body);
-    res.status(200).json({
-      success: true,
-      message: "Habit created successfully",
-      data: {
-        habit: newHabit,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Error in creating Habit",
-    });
-  }
-};
+export const handleCreateHabit = asyncHandler(async (req, res) => {
+  const newHabit = await createHabit(req.body);
+  return res
+    .status(201)
+    .json(
+      new ApiResponse(201, { habit: newHabit }, "Habit created successfully")
+    );
+});
 
-export const handleDeleteHabit = async (req, res) => {
-  try {
-    const deletedHabit = await deleteHabit(req.params.id);
-    res.status(200).json({
-      success: true,
-      message: "Habit deleted successfully",
-      data: {
-        habit: deletedHabit,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Error in deleting Habit",
-    });
-  }
-};
+export const handleDeleteHabit = asyncHandler(async (req, res) => {
+  const deletedHabit = await deleteHabit(req.params.id);
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { habit: deletedHabit },
+        "Habit deleted successfully"
+      )
+    );
+});
 
-export const handleUpdateHabit = async (req, res) => {
+export const handleUpdateHabit = asyncHandler(async (req, res) => {
   const habitId = req.params.id;
-  try {
-    const updatedHabit = await updateHabit(habitId, req.body);
-    res.status(200).json({
-      sucesss: true,
-      message: "Habit updated successfully",
-      data: {
-        habit: updatedHabit,
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Error in updating habit",
-    });
-  }
-};
+  const updatedHabit = await updateHabit(habitId, req.body);
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { habit: updatedHabit },
+        "Habit updated successfully"
+      )
+    );
+});

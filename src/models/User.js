@@ -18,6 +18,9 @@ const UserSchema = new Schema(
       type: [Schema.Types.ObjectId],
       default: [],
     },
+    refreshToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,

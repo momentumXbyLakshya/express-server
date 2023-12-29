@@ -5,26 +5,22 @@ import {
   updateUserFromHankoId,
   updateUserWithHabit,
 } from "../services/user.services.js";
+import { ApiError } from "../utilities/ApiError.js";
+import { ApiResponse } from "../utilities/ApiResponse.js";
 
 export const handleUserRegistration = async (req, res) => {
   const { name, email, avatar, hankoId } = req.body;
   const isEmailAlreadyRegistered = await checkEmailExists(email);
   if (isEmailAlreadyRegistered) {
-    res.status(400).json({
-      success: false,
-      message: "Email already exists!",
-    });
-    return;
+    throw new ApiError(409, "Email already exists");
   }
   try {
     const newUser = await registerUser({ name, email, avatar, hankoId });
-    res.status(200).json({
-      success: true,
-      message: "User registered successfully",
-      data: {
-        user: newUser,
-      },
-    });
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, { user: newUser }, "User registered successfully")
+      );
   } catch (err) {
     console.log(err);
     res.status(500).json({

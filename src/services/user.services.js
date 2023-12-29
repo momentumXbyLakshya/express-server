@@ -1,5 +1,6 @@
 import { User } from "../models/User.js";
 import { Habit } from "../models/Habit.js";
+import { ApiError } from "../utilities/ApiError.js";
 
 export const registerUser = async (user) => {
   const newRegisterUser = new User(user);
@@ -7,7 +8,7 @@ export const registerUser = async (user) => {
     await newRegisterUser.save();
     return newRegisterUser;
   } catch (e) {
-    throw Error("Errow while creating new user");
+    throw new ApiError("Something went wrong while creating new user");
   }
 };
 
@@ -82,7 +83,6 @@ export const checkEmailExists = async (email) => {
       return false;
     }
   } catch (err) {
-    console.log(err);
-    throw Error("Error in finding user with same email");
+    throw new ApiError("Something went wrong while checking if email exists");
   }
 };

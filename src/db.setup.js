@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
 
-// Connect to the MongoDB database
-const mongoDBURI = process.env.MONGODB_URI;
+const mongoUri =
+  process.env.MONGODB_URI || "mongodb://localhost:27017/momentumX";
 
-try {
-  mongoose.connect(mongoDBURI);
-  console.log("MongoDB Connected!");
-} catch (err) {
-  console.log("Error in connecting to MongoDB", err);
+async function connectDB() {
+  try {
+    const connectedInstance = await mongoose.connect(mongoUri);
+    console.log(
+      `MongoDB connected !! host: ${connectedInstance.connection.host}`
+    );
+  } catch (err) {
+    console.log("MongoDB connection FAILED", err);
+    process.exit(1);
+  }
 }
-mongoose.connect(mongoDBURI);
 
-export default mongoose;
+export default connectDB;
