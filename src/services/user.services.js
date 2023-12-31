@@ -3,11 +3,12 @@ import { Habit } from "../models/Habit.js";
 import { ApiError } from "../utilities/ApiError.js";
 
 export const registerUser = async (user) => {
-  const newRegisterUser = new User(user);
+  const newRegisterUser = await User.create(user);
   try {
     await newRegisterUser.save();
     return newRegisterUser;
   } catch (e) {
+    console.log(e);
     throw new ApiError("Something went wrong while creating new user");
   }
 };
