@@ -4,7 +4,7 @@ import {
   handleUserRegistration,
   handleUserUpdate,
   handleHabitCompletion,
-} from "../controllers/user.controllers.js";
+} from "../controllers/user.controller";
 
 const router = express.Router();
 

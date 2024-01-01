@@ -1,10 +1,10 @@
 import cron from "node-cron";
-import { Habit } from "../models/Habit.js";
+import { Habit, InterfaceHabit } from "../models/habit.model";
 
 // cron job to run on the midnight of every day at midnight to reset daily habits
 cron.schedule("0 0 * * *", async () => {
   const habits = await Habit.find({ resetCounterType: 1 });
-  habits.forEach((hab) => {
+  habits.forEach((hab: InterfaceHabit) => {
     if (hab.type === 1) {
       hab.positiveCounter = 0;
     } else {

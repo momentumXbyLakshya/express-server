@@ -1,10 +1,15 @@
 import * as jose from "jose";
+import { NextFunction, Request, Response } from "express";
 
 const JWKS = jose.createRemoteJWKSet(
   new URL(`${process.env.HANKO_API_URI}/.well-known/jwks.json`)
 );
 
-export const isAuthenticated = async (req, res, next) => {
+export const isAuthenticated = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   let token = null;
   if (
     req.headers.authorization &&
@@ -15,13 +20,12 @@ export const isAuthenticated = async (req, res, next) => {
     console.log("hanko", req.cookies.hanko);
     token = req.cookies.hanko;
   }
-  console.log(token);
   if (token === null || token.length === 0) {
     res.status(401).send("Unauthorized");
     return;
   }
   let authError = false;
-  await jose.jwtVerify(token, JWKS).catch((err) => {
+  await jose.jwtVerify(token, JWKS).catch((err: unknown) => {
     authError = true;
     console.log(err);
   });

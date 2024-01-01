@@ -3,7 +3,7 @@ import {
   handleCreateHabit,
   handleDeleteHabit,
   handleUpdateHabit,
-} from "../controllers/habit.controllers.js";
+} from "../controllers/habit.controller";
 
 const router = express.Router();
 
