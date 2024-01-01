@@ -1,8 +1,15 @@
-export class ApiError extends Error {
+export class ApiError<TData = any, TError = any> extends Error {
+  statusCode: number;
+  message: string;
+  data: TData | null;
+  errors: TError[];
+  success: boolean;
+  stack: string = "";
+
   constructor(
-    statusCode,
+    statusCode: number,
     message = "Something went wrong",
-    errors = [],
+    errors: TError[] = [],
     stack = ""
   ) {
     super(message);
@@ -15,7 +22,7 @@ export class ApiError extends Error {
     if (stack) {
       this.stack = stack;
     } else {
-      this.stack = Error.captureStackTrace(this, this.constructor);
+      Error.captureStackTrace(this, this.constructor);
     }
   }
 

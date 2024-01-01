@@ -2,12 +2,12 @@ import express from "express";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import router from "./routes/index.js";
-import { isAuthenticated } from "./middleware/auth.js";
+import router from "./routes/index";
+import { isAuthenticated } from "./middleware/auth";
 
-import connectDB from "./db.setup.js";
+import connectDB from "./db.setup";
 
-import "./cronjobs/habit.js";
+import "./cronjobs/habit";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -23,17 +23,18 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: false, limit: "16kb" }));
 app.use(cookieParser());
 
-app.use(isAuthenticated);
+// app.use(isAuthenticated);
 
 app.use("/api", router);
 
-connectDB()
-  .then(() => {
-    app.listen(PORT, (err) => {
-      if (err) console.log("Error in starting the server");
+connectDB().then(() => {
+  app
+    .listen(PORT, () => {
       console.log(`Server running on ${PORT}`);
+    })
+    .on("error", (err: NodeJS.ErrnoException) => {
+      console.log("Error in starting the server");
     });
-  })
-  .catch(() => {});
+});
 
 export default app;
