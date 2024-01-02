@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const mongoUri =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/momentumX";
+  process.env.MONGODB_URI ?? 'mongodb://localhost:27017/momentumX';
 
 async function connectDB() {
   try {
@@ -10,7 +10,7 @@ async function connectDB() {
       `MongoDB connected !! host: ${connectedInstance.connection.host}`
     );
   } catch (err) {
-    console.log("MongoDB connection FAILED", err);
+    console.log('MongoDB connection FAILED', err);
     process.exit(1);
   }
 }

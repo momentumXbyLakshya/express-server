@@ -4,13 +4,13 @@ export class ApiError<TData = any, TError = any> extends Error {
   data: TData | null;
   errors: TError[];
   success: boolean;
-  stack: string = "";
+  stack: string = '';
 
   constructor(
     statusCode: number,
-    message = "Something went wrong",
+    message = 'Something went wrong',
     errors: TError[] = [],
-    stack = ""
+    stack = ''
   ) {
     super(message);
     this.statusCode = statusCode;
@@ -19,7 +19,7 @@ export class ApiError<TData = any, TError = any> extends Error {
     this.success = false;
     this.errors = errors;
 
-    if (stack) {
+    if (stack.length > 0) {
       this.stack = stack;
     } else {
       Error.captureStackTrace(this, this.constructor);

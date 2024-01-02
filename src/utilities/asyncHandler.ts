@@ -1,5 +1,5 @@
-import { ApiError } from "./ApiError";
-import { Request, Response } from "express";
+import { ApiError } from './ApiError';
+import { type Request, type Response } from 'express';
 
 type RequestHandler = (req: Request, res: Response) => Promise<any>;
 
@@ -12,7 +12,7 @@ export const asyncHandler =
         return res.status(err.statusCode || 500).json(err);
       } else {
         return res.status(500).json({
-          message: "Unexpected error occured",
+          message: 'Unexpected error occured',
         });
       }
     });
