@@ -1,16 +1,16 @@
-export type UserRegistrationInput = {
+export interface UserRegistrationInput {
   name?: string;
   email: string;
   avatar?: string;
   hankoId: string;
-};
+}
 
-export type UpdateUserInput = {
+export interface UpdateUserInput {
   name: string;
   avatar: string;
-};
+}
 
-export type CreateHabitInput = {
+export interface CreateHabitInput {
   title: string;
   user: string;
   type: number;
@@ -18,11 +18,11 @@ export type CreateHabitInput = {
   positiveCounter?: number;
   negativeCounter?: number;
   resetCounterType: number;
-};
+}
 
-export type UpdateHabitInput = {
+export interface UpdateHabitInput {
   title: string;
   resetCounterType: number;
   type: number;
   difficulty: number;
-};
+}

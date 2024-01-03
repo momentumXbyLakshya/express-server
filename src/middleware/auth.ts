@@ -1,37 +1,40 @@
-import * as jose from "jose";
-import { NextFunction, Request, Response } from "express";
+import * as jose from 'jose';
+import { type NextFunction, type Request, type Response } from 'express';
 
 const JWKS = jose.createRemoteJWKSet(
   new URL(`${process.env.HANKO_API_URI}/.well-known/jwks.json`)
 );
 
-export const isAuthenticated = async (
+export const isAuthenticated = (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> => {
-  let token = null;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.split(" ")[0] === "Bearer"
-  ) {
-    token = req.headers.authorization.split(" ")[1];
-  } else if (req.cookies && req.cookies.hanko) {
-    console.log("hanko", req.cookies.hanko);
-    token = req.cookies.hanko;
-  }
-  if (token === null || token.length === 0) {
-    res.status(401).send("Unauthorized");
-    return;
-  }
-  let authError = false;
-  await jose.jwtVerify(token, JWKS).catch((err: unknown) => {
-    authError = true;
-    console.log(err);
+) => {
+  (async () => {
+    try {
+      let token: string | null = null;
+
+      if (
+        req.headers.authorization &&
+        req.headers.authorization.split(' ')[0] === 'Bearer'
+      ) {
+        token = req.headers.authorization.split(' ')[1];
+      } else if (req.cookies?.hanko) {
+        token = req.cookies.hanko;
+      }
+
+      if (!token || token.length === 0) {
+        return res.status(401).send('Unauthorized');
+      }
+
+      await jose.jwtVerify(token, JWKS);
+      next();
+    } catch (err) {
+      console.error(err);
+      res.status(401).send('Authentication Token not valid');
+    }
+  })().catch((err) => {
+    console.log('Error in checking authorization of request', err);
+    res.status(500).send('Something went wrong with auth middleware');
   });
-  if (authError) {
-    res.status(401).send("Authentication Token not valid");
-    return;
-  }
-  next();
 };

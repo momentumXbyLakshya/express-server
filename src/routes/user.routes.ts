@@ -1,16 +1,16 @@
-import express from "express";
+import express from 'express';
 import {
   handleGetUserFromHankoId,
   handleUserRegistration,
   handleUserUpdate,
   handleHabitCompletion,
-} from "../controllers/user.controller";
+} from '../controllers/user.controller';
 
 const router = express.Router();
 
-router.post("/", handleUserRegistration);
-router.get("/:hankoId", handleGetUserFromHankoId);
-router.put("/:hankoId", handleUserUpdate);
-router.put("/habit/:habitId", handleHabitCompletion);
+router.post('/', handleUserRegistration);
+router.get('/:hankoId', handleGetUserFromHankoId);
+router.put('/:hankoId', handleUserUpdate);
+router.put('/habit/:habitId', handleHabitCompletion);
 
 export default router;

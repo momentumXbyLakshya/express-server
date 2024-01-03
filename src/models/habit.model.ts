@@ -1,4 +1,4 @@
-import { Schema, model, Types, Document } from "mongoose";
+import { Schema, model, type Types, type Document } from 'mongoose';
 
 export interface InterfaceHabit extends Document {
   title: string;
@@ -15,7 +15,7 @@ export interface InterfaceHabit extends Document {
 const HabitSchema = new Schema<InterfaceHabit>(
   {
     title: { type: String, required: true },
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     type: Number,
     difficulty: Number,
     positiveCounter: Number,
@@ -27,4 +27,4 @@ const HabitSchema = new Schema<InterfaceHabit>(
   }
 );
 
-export const Habit = model<InterfaceHabit>("Habit", HabitSchema);
+export const Habit = model<InterfaceHabit>('Habit', HabitSchema);
